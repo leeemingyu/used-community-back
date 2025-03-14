@@ -39,15 +39,16 @@ public class MemberController {
 			Login loginInfo=memberService.tokenLogin(m);
 			
 			if(loginInfo!=null && loginInfo.getNickname()!=null && loginInfo.getToken()!=null) {
+				responseMap.put("status", "ok");
 				responseMap.put("nickname", loginInfo.getNickname());
 				responseMap.put("Authorization", loginInfo.getToken());
 			}else {
-				responseMap.put("msg", "다시 로그인 해주세요1");
+				responseMap.put("msg", "아이디 또는 비밀번호가 올바르지 않습니다");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseMap.put("msg", "다시 로그인 해주세요2");
+			responseMap.put("msg", "아이디 또는 비밀번호가 올바르지 않습니다");
 		}
 		return responseMap;
 	}
@@ -56,7 +57,7 @@ public class MemberController {
 	public String insertMember(@RequestBody Member m) {
 		try {
 			memberService.insertMember(m);
-			return m.getNickname()+"님 가입을 환영합니다";
+			return "회원 가입 성공";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
