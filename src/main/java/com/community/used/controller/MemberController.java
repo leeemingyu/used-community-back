@@ -52,7 +52,7 @@ public class MemberController {
 		return responseMap;
 	}
 	
-	@PostMapping("insertMember")
+	@PostMapping("signup")
 	public String insertMember(@RequestBody Member m) {
 		try {
 			memberService.insertMember(m);
