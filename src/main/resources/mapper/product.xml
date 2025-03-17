@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.used.dao.ProductDao">
+  
+  <!-- 상품 등록 -->
+  <insert id="insertProduct" parameterType="Product">
+    insert into products(name, category, description, price, imagePaths, nickname) 
+    values(#{name}, #{category}, #{description}, #{price}, #{imagePaths}, #{nickname})
+  </insert>
+
+  <!-- 상품 수정 -->
+  <update id="updateProduct" parameterType="Product">
+    update products
+    set name=#{name}, category=#{category}, description=#{description}, price=#{price}, imagePaths=#{imagePaths}, nickname=#{nickname}
+    where id=#{id}
+  </update>
+
+  <!-- 상품 삭제 -->
+  <delete id="deleteProduct" parameterType="Long">
+    delete from products where id=#{id}
+  </delete>
+
+  <!-- 상품 1개 조회 -->
+  <select id="getProductById" resultType="Product" parameterType="Long">
+    select * from products where id=#{id}
+  </select>
+
+  <!-- 전체 상품 조회 -->
+  <select id="getAllProducts" resultType="Product">
+    select * from products
+  </select>
+
+  <!-- 카테고리별 상품 조회 -->
+  <select id="getProductsByCategory" resultType="Product" parameterType="String">
+    select * from products where category=#{category}
+  </select>
+
+</mapper>
