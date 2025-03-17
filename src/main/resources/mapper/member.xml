@@ -19,4 +19,16 @@
   <delete id="deleteMember" parameterType="String">
   	delete from member where email=#{email}
   </delete>
+  
+  <select id="isEmailExists" resultType="boolean" parameterType="String">
+    SELECT COUNT(*) > 0
+    FROM member
+    WHERE email = #{email}
+  </select>
+
+  <select id="isNicknameExists" resultType="boolean" parameterType="String">
+ 	SELECT COUNT(*) > 0
+	FROM member
+    WHERE nickname = #{nickname}
+  </select>
 </mapper>

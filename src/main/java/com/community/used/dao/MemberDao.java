@@ -25,4 +25,7 @@ public interface MemberDao {
 	
 	public void deleteMember(String email) throws Exception;
 	
+	boolean isEmailExists(String email);
+    
+    boolean isNicknameExists(String nickname);
 }

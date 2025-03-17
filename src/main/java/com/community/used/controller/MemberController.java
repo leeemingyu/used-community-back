@@ -61,7 +61,21 @@ public class MemberController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "회원 가입 실패";
+			// 이메일 중복과 닉네임 중복을 모두 포함하는 메시지를 검사
+	        if (e.getMessage().contains("이메일이 이미 사용 중입니다.") && e.getMessage().contains("닉네임이 이미 사용 중입니다.")) {
+	            return "이메일 중복, 닉네임 중복";
+	        } 
+	        // 이메일 중복만 검사
+	        else if (e.getMessage().contains("이메일이 이미 사용 중입니다.")) {
+	            return "이메일 중복";
+	        } 
+	        // 닉네임 중복만 검사
+	        else if (e.getMessage().contains("닉네임이 이미 사용 중입니다.")) {
+	            return "닉네임 중복";
+	        } 
+	        else {
+	            return "회원 가입 실패에 실패했습니다. 다시 시도해주세요.";
+	        }
 		}
 	}
 	
