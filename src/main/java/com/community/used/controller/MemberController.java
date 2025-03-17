@@ -14,7 +14,7 @@ import com.community.used.dto.Member;
 import com.community.used.service.MemberService;
 
 @RestController
-@CrossOrigin("http://127.0.0.1:5500/")
+@CrossOrigin("http://192.168.219.116:5500/")
 public class MemberController {
 	
 	@Autowired

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.community.used.dao.MemberDao">
+  <select id="login" resultType="Member" parameterType="Member">
+    select * from member where email=#{email} and pwd=#{pwd}
+  </select>
+  
+  <insert id="insertMember" parameterType="Member">
+    insert into member(email, pwd, nickname) values(#{email}, #{pwd}, #{nickname})
+  </insert>
+  
+  <update id="updateMember" parameterType="Member">
+  	update member set nickname=#{nickname} where email=#{email} and pwd=#{pwd}
+  </update>
+  
+  <delete id="deleteMember" parameterType="String">
+  	delete from member where email=#{email}
+  </delete>
+</mapper>
