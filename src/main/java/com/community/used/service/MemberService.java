@@ -66,35 +66,53 @@ public class MemberService {
 		return memberDao.login(m);
 	}
 	
-	public void insertMember(Member m) throws Exception{
-		
-		// 이메일 유효성 검사
-		String email=m.getEmail();
+	public void insertMember(Member m) throws Exception {
+	    
+	    // 이메일 유효성 검사
+	    String email = m.getEmail();
 	    if (!isValidEmail(email)) {
 	        throw new Exception("유효하지 않은 이메일 형식입니다.");
-	    }		
-		
-		// 패스워드 유효성 검사
-	    String pwd=m.getPwd();
+	    }
+
+	    // 패스워드 유효성 검사
+	    String pwd = m.getPwd();
 	    if (!isValidPassword(pwd)) {
 	        throw new Exception("패스워드는 8자리 이상이어야 하며, 특수문자와 숫자를 포함해야 합니다.");
 	    }
-	    
+
+	    // 이메일 중복 검사
+	    boolean emailExists = memberDao.isEmailExists(email);
+	    // 닉네임 중복 검사
+	    String nickname = m.getNickname();
+	    boolean nicknameExists = memberDao.isNicknameExists(nickname);
+
+	    // 이메일과 닉네임 중복 검사 후, 조건에 맞는 예외 처리
+	    if (emailExists && nicknameExists) {
+	        throw new Exception("이메일이 이미 사용 중입니다. 닉네임이 이미 사용 중입니다.");
+	    } else if (emailExists) {
+	        throw new Exception("이메일이 이미 사용 중입니다.");
+	    } else if (nicknameExists) {
+	        throw new Exception("닉네임이 이미 사용 중입니다.");
+	    }
+
 	    // 패스워드 암호화
-	    //1. salt를 생성한다
-		String salt=UUID.randomUUID().toString();
-		
-		//2. pwd를 hashing 한다
-		byte[] originalHash=OpenCrypt.getSHA256(pwd, salt);
-		//3. db에 저장하기 좋은 포맷으로 인코딩한다
-		String pwdHash=OpenCrypt.byteArrayToHex(originalHash);
-		
+	    // 1. salt를 생성한다
+	    String salt = UUID.randomUUID().toString();
 	    
-		m.setPwd(pwdHash);
+	    // 2. pwd를 hashing 한다
+	    byte[] originalHash = OpenCrypt.getSHA256(pwd, salt);
+	    // 3. db에 저장하기 좋은 포맷으로 인코딩한다
+	    String pwdHash = OpenCrypt.byteArrayToHex(originalHash);
+
+	    m.setPwd(pwdHash);
 	    
-		saltDao.insertSalt(new SaltInfo(email, salt));
-		memberDao.insertMember(m);
+	    // salt를 db에 저장
+	    saltDao.insertSalt(new SaltInfo(email, salt));
+	    
+	    // member 정보를 db에 저장
+	    memberDao.insertMember(m);
 	}
+
 	
 	public void updateMember(Member m) throws Exception{
 		memberDao.updateMember(m);
