@@ -9,5 +9,7 @@ public interface LoginDao {
 
 	public void deleteToken(String token) throws Exception;
 	
-	public Login checkToken(String authorization) throws Exception;
+    public boolean checkToken(String Authorization) throws Exception;
+    
+    public void updateLoginTime(String Authorization) throws Exception;
 }

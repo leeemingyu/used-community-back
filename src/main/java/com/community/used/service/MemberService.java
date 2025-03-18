@@ -25,12 +25,6 @@ public class MemberService {
 	@Autowired
 	SaltDao saltDao;
 	
-	public Login checkToken(String authorization) throws Exception {
-		// TODO Auto-generated method stub
-		return loginDao.checkToken(authorization);
-	}
-
-	
 	public Login tokenLogin(Member m) throws Exception {
 		String pwd = m.getPwd();
 		String salt = saltDao.checkSalt(m.getEmail());

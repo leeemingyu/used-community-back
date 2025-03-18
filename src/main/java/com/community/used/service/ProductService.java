@@ -1,5 +1,6 @@
 package com.community.used.service;
 
+import com.community.used.dao.LoginDao;
 import com.community.used.dao.ProductDao;
 import com.community.used.dto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class ProductService {
 
     @Autowired
     ProductDao productDao;
+    
+    @Autowired
+    LoginDao loginDao;
 
     private static final String UPLOAD_DIR = "E:\\ureca\\workspace\\mini-project\\UsedCommunityBack\\src\\main\\resources\\static\\images"; // 파일이 저장될 디렉토리 경로
     private static final String IMAGE_URL = "http://127.0.0.1:8080/images/"; // 이미지 요청 URL 경로
@@ -51,11 +55,13 @@ public class ProductService {
 
     // 상품 등록
     public void insertProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
-    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+    	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
+        
+        loginDao.updateLoginTime(Authorization);
     	
     	// 이미지 파일을 저장하고 경로를 설정
         if (image1 != null) {
@@ -75,18 +81,19 @@ public class ProductService {
         productDao.insertProduct(product);
     }
     
-    // 상품 1개 조회
-    public Product getProductById(Long id) throws Exception {
-        return productDao.getProductById(id);
-    }
-    
-    // 닉네임으로 상품 조회
-    public List<Product> getProductsByNickname(String nickname) throws Exception {
-        return productDao.getProductsByNickname(nickname);  // nickname을 기준으로 상품을 조회하는 메서드 호출
-    }
     // 전체 상품 조회
-    public List<Product> getAllProducts() throws Exception {
-        List<Product> products = productDao.getAllProducts();
+    public List<Product> getAllProducts(String Authorization) throws Exception {
+    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
+        if (Authorization != null && !Authorization.isEmpty()) {
+            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            if (isAuthorized) {
+                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+            } else {
+                throw new Exception("잘못된 인증 정보입니다.");
+            }
+        }
+    	
+    	List<Product> products = productDao.getAllProducts();
 
         // 각 상품에 대해 이미지 경로를 URL로 변경
         for (Product product : products) {
@@ -103,21 +110,57 @@ public class ProductService {
                 product.setImage3(imageUrls3);  // 상품의 image3 경로를 이미지 URL로 변경
             }
         }
-
         return products;
     }
+    // 상품 id로 조회
+    public Product getProductById(Long id, String Authorization) throws Exception {
+    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
+        if (Authorization != null && !Authorization.isEmpty()) {
+            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            if (isAuthorized) {
+                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+            } else {
+                throw new Exception("잘못된 인증 정보입니다.");
+            }
+        }
+        return productDao.getProductById(id);
+    }
+    // 닉네임으로 상품 조회
+    public List<Product> getProductsByNickname(String nickname, String Authorization) throws Exception {
+    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
+        if (Authorization != null && !Authorization.isEmpty()) {
+            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            if (isAuthorized) {
+                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+            } else {
+                throw new Exception("잘못된 인증 정보입니다.");
+            }
+        }
+        return productDao.getProductsByNickname(nickname);  // nickname을 기준으로 상품을 조회하는 메서드 호출
+    }
     // 카테고리별 상품 조회
-    public List<Product> getProductsByCategory(String category) throws Exception {
+    public List<Product> getProductsByCategory(String category, String Authorization) throws Exception {
+    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
+        if (Authorization != null && !Authorization.isEmpty()) {
+            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            if (isAuthorized) {
+                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+            } else {
+                throw new Exception("잘못된 인증 정보입니다.");
+            }
+        }
         return productDao.getProductsByCategory(category);
     }
     
     // 상품 수정
     public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
-    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+    	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
+        
+        loginDao.updateLoginTime(Authorization);
     	
         // 이미지 파일을 저장하고 경로를 설정
         if (image1 != null) {
@@ -136,11 +179,13 @@ public class ProductService {
 
     // 상품 삭제
     public boolean deleteProduct(Long id, String Authorization) throws Exception {
-    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+    	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
+        
+        loginDao.updateLoginTime(Authorization);
     	
         int rowsDeleted = productDao.deleteProduct(id);
         return rowsDeleted > 0;

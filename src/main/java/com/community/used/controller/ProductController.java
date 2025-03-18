@@ -56,6 +56,82 @@ public class ProductController {
         return responseMap;
     }
 
+    // 전체 상품 조회
+    @GetMapping("api/products")
+    public Map<String, Object> getAllProducts(@RequestHeader(value = "Authorization", required = false) String Authorization) {
+        Map<String, Object> responseMap = new HashMap<>();
+        try {
+            List<Product> products = productService.getAllProducts(Authorization);  // 모든 상품을 조회
+            responseMap.put("status", "ok");
+            responseMap.put("products", products);  // 조회된 상품 리스트 반환
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "상품 조회에 실패했습니다.");
+        }
+        return responseMap;
+    }
+    // 상품 id로 조회
+    @GetMapping("api/products/{id}")
+    public Map<String, Object> getProductById(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+        Map<String, Object> responseMap = new HashMap<>();
+        try {
+            Product product = productService.getProductById(id, Authorization);  // 상품 ID로 상품을 조회
+            if (product != null) {
+                responseMap.put("status", "ok");
+                responseMap.put("product", product);  // 조회된 상품 반환
+            } else {
+                responseMap.put("status", "error");
+                responseMap.put("message", "상품을 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "상품 조회에 실패했습니다.");
+        }
+        return responseMap;
+    }
+    // 닉네임으로 상품 조회
+    @GetMapping("api/products/nickname/{nickname}")
+    public Map<String, Object> getProductsByNickname(@PathVariable("nickname") String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+        Map<String, Object> responseMap = new HashMap<>();
+        try {
+            List<Product> products = productService.getProductsByNickname(nickname, Authorization);  // 카테고리로 상품 조회
+            if (!products.isEmpty()) {
+                responseMap.put("status", "ok");
+                responseMap.put("products", products);  // 조회된 상품 리스트 반환
+            } else {
+                responseMap.put("status", "error");
+                responseMap.put("message", "해당 사용자의 상품이 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "해당 사용자의 상품 조회에 실패했습니다.");
+        }
+        return responseMap;
+    }
+    // 카테고리별 상품 조회
+    @GetMapping("api/products/category/{category}")
+    public Map<String, Object> getProductsByCategory(@PathVariable("category") String category, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+        Map<String, Object> responseMap = new HashMap<>();
+        try {
+            List<Product> products = productService.getProductsByCategory(category, Authorization);  // 카테고리로 상품 조회
+            if (!products.isEmpty()) {
+                responseMap.put("status", "ok");
+                responseMap.put("products", products);  // 조회된 상품 리스트 반환
+            } else {
+                responseMap.put("status", "error");
+                responseMap.put("message", "해당 카테고리에 상품이 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "카테고리 조회에 실패했습니다.");
+        }
+        return responseMap;
+    }
+
     // 상품 수정
     @PostMapping("api/products/update")
     public Map<String, String> updateProduct(
@@ -92,81 +168,6 @@ public class ProductController {
             } else {
             	responseMap.put("message", "오류가 발생했습니다. 다시 시도해주세요.");    
             }
-        }
-        return responseMap;
-    }
-    
-    @GetMapping("api/products")
-    public Map<String, Object> getAllProducts() {
-        Map<String, Object> responseMap = new HashMap<>();
-        try {
-            List<Product> products = productService.getAllProducts();  // 모든 상품을 조회
-            responseMap.put("status", "ok");
-            responseMap.put("products", products);  // 조회된 상품 리스트 반환
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseMap.put("status", "error");
-            responseMap.put("message", "상품 조회에 실패했습니다.");
-        }
-        return responseMap;
-    }
-
-    @GetMapping("api/products/{id}")
-    public Map<String, Object> getProductById(@PathVariable("id") Long id) {
-        Map<String, Object> responseMap = new HashMap<>();
-        try {
-            Product product = productService.getProductById(id);  // 상품 ID로 상품을 조회
-            if (product != null) {
-                responseMap.put("status", "ok");
-                responseMap.put("product", product);  // 조회된 상품 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "상품을 찾을 수 없습니다.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseMap.put("status", "error");
-            responseMap.put("message", "상품 조회에 실패했습니다.");
-        }
-        return responseMap;
-    }
-    
-    @GetMapping("api/products/category/{category}")
-    public Map<String, Object> getProductsByCategory(@PathVariable("category") String category) {
-        Map<String, Object> responseMap = new HashMap<>();
-        try {
-            List<Product> products = productService.getProductsByCategory(category);  // 카테고리로 상품 조회
-            if (!products.isEmpty()) {
-                responseMap.put("status", "ok");
-                responseMap.put("products", products);  // 조회된 상품 리스트 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "해당 카테고리에 상품이 없습니다.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseMap.put("status", "error");
-            responseMap.put("message", "카테고리 조회에 실패했습니다.");
-        }
-        return responseMap;
-    }
-
-    @GetMapping("api/products/nickname/{nickname}")
-    public Map<String, Object> getProductsByNickname(@PathVariable("nickname") String nickname) {
-        Map<String, Object> responseMap = new HashMap<>();
-        try {
-            List<Product> products = productService.getProductsByNickname(nickname);  // 카테고리로 상품 조회
-            if (!products.isEmpty()) {
-                responseMap.put("status", "ok");
-                responseMap.put("products", products);  // 조회된 상품 리스트 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "해당 사용자의 상품이 없습니다.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseMap.put("status", "error");
-            responseMap.put("message", "해당 사용자의 상품 조회에 실패했습니다.");
         }
         return responseMap;
     }

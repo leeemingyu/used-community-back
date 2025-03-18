@@ -30,5 +30,4 @@ public interface ProductDao {
     // 카테고리별 상품 조회
     public List<Product> getProductsByCategory(String category) throws Exception;
     
-    public boolean checkAuthorization(String Authorization) throws Exception;
 }
