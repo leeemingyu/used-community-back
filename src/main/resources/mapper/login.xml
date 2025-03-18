@@ -13,6 +13,17 @@
   	delete from login where token=#{token}
   </delete>
   
+  <select id="checkToken" resultType="Boolean" parameterType="String">
+    SELECT COUNT(*) > 0 
+    FROM login 
+    WHERE token = #{Authorization} 
+      AND logintime >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+  </select>
   
+  <update id="updateLoginTime" parameterType="String">
+    UPDATE login 
+    SET logintime = NOW() 
+    WHERE token = #{Authorization}
+  </update>
   
 </mapper>

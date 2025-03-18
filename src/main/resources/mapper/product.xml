@@ -43,9 +43,5 @@
   <select id="getProductsByNickname" resultType="Product" parameterType="String">
     select * from products where nickname=#{nickname}
   </select>
-  
-  <select id="checkAuthorization" resultType="Boolean" parameterType="String">
-    SELECT COUNT(*) > 0 FROM login WHERE token = #{Authorization}
-  </select>
 
 </mapper>
