@@ -18,7 +18,7 @@ public class ProductController {
     ProductService productService;
 
     // 상품 등록
-    @PostMapping("/products/new")
+    @PostMapping("api/products/new")
     public Map<String, String> insertProduct(
             @RequestParam("name") String name,
             @RequestParam("category") String category,
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     // 상품 수정
-    @PostMapping("/products/update")
+    @PostMapping("api/products/update")
     public Map<String, String> updateProduct(@RequestBody Product product) {
         Map<String, String> responseMap = new HashMap<>();
         try {
@@ -62,7 +62,7 @@ public class ProductController {
     }
 
     // 상품 삭제
-    @PostMapping("/products/delete")
+    @PostMapping("api/products/delete")
     public Map<String, String> deleteProduct(@RequestBody Long id) {
         Map<String, String> responseMap = new HashMap<>();
         try {
@@ -78,7 +78,7 @@ public class ProductController {
     }
 
     // 상품 1개 조회
-    @GetMapping("/products/{id}")
+    @GetMapping("api/products/{id}")
     public Map<String, Object> getProduct(@PathVariable Long id) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
@@ -94,7 +94,7 @@ public class ProductController {
     }
 
     // 전체 상품 조회 (이미지 URL 포함)
-    @GetMapping("/products")
+    @GetMapping("api/products")
     public Map<String, Object> getAllProducts() {
         Map<String, Object> responseMap = new HashMap<>();
         try {
@@ -111,7 +111,7 @@ public class ProductController {
     
 
     // 카테고리별 상품 조회
-    @GetMapping("/products/category/{category}")
+    @GetMapping("api/products/category/{category}")
     public Map<String, Object> getProductsByCategory(@PathVariable String category) {
         Map<String, Object> responseMap = new HashMap<>();
         try {

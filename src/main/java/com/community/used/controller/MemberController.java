@@ -20,7 +20,7 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 	
-	@PostMapping("logout")
+	@PostMapping("api/logout")
 	public void logout(@RequestHeader String authorization) {
 		try {
 			memberService.logout(authorization);
@@ -30,7 +30,7 @@ public class MemberController {
 		}
 	}
 	
-	@PostMapping("login")
+	@PostMapping("api/login")
 	public Map<String,String> tokenLogin(@RequestBody Member m) {
 		
 		Map<String,String> responseMap=new HashMap<>();
@@ -53,7 +53,7 @@ public class MemberController {
 		return responseMap;
 	}
 	
-	@PostMapping("signup")
+	@PostMapping("api/signup")
 	public String insertMember(@RequestBody Member m) {
 		try {
 			memberService.insertMember(m);
@@ -79,7 +79,7 @@ public class MemberController {
 		}
 	}
 	
-	@PostMapping("updateMember")
+	@PostMapping("api/updateMember")
 	public String updateMember(@RequestBody Member m) {
 		try {
 			memberService.updateMember(m);
@@ -91,7 +91,7 @@ public class MemberController {
 		}
 	}
 	
-	@PostMapping("deleteMember")
+	@PostMapping("api/deleteMember")
 	public String deleteMember(@RequestBody String email) {
 		try {
 			memberService.deleteMember(email);
