@@ -87,8 +87,9 @@ public class ProductService {
     }
 
     // 상품 삭제
-    public void deleteProduct(Long id) throws Exception {
-        productDao.deleteProduct(id);
+    public boolean deleteProduct(Long id) throws Exception {
+        int rowsDeleted = productDao.deleteProduct(id);
+        return rowsDeleted > 0;
     }
 
     // 상품 1개 조회

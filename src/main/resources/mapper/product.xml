@@ -30,7 +30,8 @@
 
   <!-- 전체 상품 조회 -->
   <select id="getAllProducts" resultType="Product">
-    select * from products
+    SELECT * FROM products
+  	ORDER BY createdAt DESC
   </select>
 
   <!-- 카테고리별 상품 조회 -->

@@ -141,5 +141,25 @@ public class ProductController {
         return responseMap;
     }
 
+    // 상품 삭제
+    @DeleteMapping("api/products/{id}")
+    public Map<String, String> deleteProduct(@PathVariable("id") Long id) {
+        Map<String, String> responseMap = new HashMap<>();
+        try {
+            boolean isDeleted = productService.deleteProduct(id);  // 상품 삭제 서비스 호출
+            if (isDeleted) {
+                responseMap.put("status", "ok");
+                responseMap.put("message", "상품 삭제 성공");
+            } else {
+                responseMap.put("status", "error");
+                responseMap.put("message", "상품을 찾을 수 없거나 삭제 실패");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "상품 삭제 실패");
+        }
+        return responseMap;
+    }
 
 }
