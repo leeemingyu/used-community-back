@@ -27,7 +27,8 @@ public class ProductController {
             @RequestParam("nickname") String nickname,
             @RequestParam(value = "image1", required = false) MultipartFile image1,
             @RequestParam(value = "image2", required = false) MultipartFile image2,
-            @RequestParam(value = "image3", required = false) MultipartFile image3) {
+            @RequestParam(value = "image3", required = false) MultipartFile image3,
+            @RequestHeader String Authorization) {
 
         Map<String, String> responseMap = new HashMap<>();
         try {
@@ -39,14 +40,18 @@ public class ProductController {
             product.setPrice(price);
             product.setNickname(nickname);
             System.out.println(nickname);
-            productService.insertProduct(product, image1, image2, image3);
+            productService.insertProduct(product, image1, image2, image3, Authorization);
 
             responseMap.put("status", "ok");
             responseMap.put("message", "상품 등록 성공");
-        } catch (Exception e) {
+        		} catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
-            responseMap.put("message", "상품 등록 실패");
+            if (e.getMessage().equals("잘못된 접근입니다.")) {
+            	responseMap.put("message", e.getMessage());
+            } else {
+            	responseMap.put("message", "오류가 발생했습니다. 다시 시도해주세요.");    
+            }
         }
         return responseMap;
     }
@@ -62,7 +67,8 @@ public class ProductController {
             @RequestParam("nickname") String nickname,
             @RequestParam(value = "image1", required = false) MultipartFile image1,
             @RequestParam(value = "image2", required = false) MultipartFile image2,
-            @RequestParam(value = "image3", required = false) MultipartFile image3) {
+            @RequestParam(value = "image3", required = false) MultipartFile image3,
+            @RequestHeader String Authorization) {
 
         Map<String, String> responseMap = new HashMap<>();
         try {
@@ -74,14 +80,18 @@ public class ProductController {
             product.setPrice(price);
             product.setNickname(nickname);
 
-            productService.updateProduct(product, image1, image2, image3);
+            productService.updateProduct(product, image1, image2, image3, Authorization);
 
             responseMap.put("status", "ok");
             responseMap.put("message", "상품 수정 성공");
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
-            responseMap.put("message", "상품 수정 실패");
+            if (e.getMessage().equals("잘못된 접근입니다.")) {
+            	responseMap.put("message", e.getMessage());
+            } else {
+            	responseMap.put("message", "오류가 발생했습니다. 다시 시도해주세요.");    
+            }
         }
         return responseMap;
     }
@@ -163,10 +173,10 @@ public class ProductController {
     
     // 상품 삭제
     @DeleteMapping("api/products/{id}")
-    public Map<String, String> deleteProduct(@PathVariable("id") Long id) {
+    public Map<String, String> deleteProduct(@PathVariable("id") Long id, @RequestHeader String Authorization) {
         Map<String, String> responseMap = new HashMap<>();
         try {
-            boolean isDeleted = productService.deleteProduct(id);  // 상품 삭제 서비스 호출
+            boolean isDeleted = productService.deleteProduct(id, Authorization);  // 상품 삭제 서비스 호출
             if (isDeleted) {
                 responseMap.put("status", "ok");
                 responseMap.put("message", "상품 삭제 성공");
@@ -177,7 +187,11 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
-            responseMap.put("message", "상품 삭제 실패");
+            if (e.getMessage().equals("잘못된 접근입니다.")) {
+            	responseMap.put("message", e.getMessage());
+            } else {
+            	responseMap.put("message", "오류가 발생했습니다. 다시 시도해주세요.");    
+            }
         }
         return responseMap;
     }
