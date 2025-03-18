@@ -7,8 +7,8 @@
   
   <!-- 상품 등록 -->
   <insert id="insertProduct" parameterType="Product">
-    insert into products(name, category, description, price, imagePaths, nickname) 
-    values(#{name}, #{category}, #{description}, #{price}, #{imagePaths}, #{nickname})
+    insert into products(name, category, description, price, image1, image2, image3, nickname) 
+    values(#{name}, #{category}, #{description}, #{price}, #{image1}, #{image2}, #{image3}, #{nickname})
   </insert>
 
   <!-- 상품 수정 -->

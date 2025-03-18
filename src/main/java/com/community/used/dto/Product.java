@@ -9,7 +9,9 @@ public class Product {
     private String description;
     private int price;
     private Date createdAt;
-    private String imagePaths;
+    private String image1;
+    private String image2;
+    private String image3;
     private String nickname;
 	public Long getId() {
 		return id;
@@ -47,11 +49,23 @@ public class Product {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	public String getImagePaths() {
-		return imagePaths;
+	public String getImage1() {
+		return image1;
 	}
-	public void setImagePaths(String imagePaths) {
-		this.imagePaths = imagePaths;
+	public void setImage1(String image1) {
+		this.image1 = image1;
+	}
+	public String getImage2() {
+		return image2;
+	}
+	public void setImage2(String image2) {
+		this.image2 = image2;
+	}
+	public String getImage3() {
+		return image3;
+	}
+	public void setImage3(String image3) {
+		this.image3 = image3;
 	}
 	public String getNickname() {
 		return nickname;
@@ -59,8 +73,8 @@ public class Product {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	public Product(Long id, String name, String category, String description, int price, Date createdAt,
-			String imagePaths, String nickname) {
+	public Product(Long id, String name, String category, String description, int price, Date createdAt, String image1,
+			String image2, String image3, String nickname) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -68,19 +82,11 @@ public class Product {
 		this.description = description;
 		this.price = price;
 		this.createdAt = createdAt;
-		this.imagePaths = imagePaths;
+		this.image1 = image1;
+		this.image2 = image2;
+		this.image3 = image3;
 		this.nickname = nickname;
 	}
-	public Product(String name, String category, String description, int price, String imagePaths, String nickname) {
-	    this.name = name;
-	    this.category = category;
-	    this.description = description;
-	    this.price = price;
-	    this.imagePaths = imagePaths;
-	    this.nickname = nickname;
-	    this.createdAt = new Date();  // 상품 등록 시 생성 시간을 현재 시간으로 설정
-	}
-
 	public Product() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -88,8 +94,8 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", category=" + category + ", description=" + description
-				+ ", price=" + price + ", createdAt=" + createdAt + ", imagePaths=" + imagePaths + ", nickname="
-				+ nickname + "]";
+				+ ", price=" + price + ", createdAt=" + createdAt + ", image1=" + image1 + ", image2=" + image2
+				+ ", image3=" + image3 + ", nickname=" + nickname + "]";
 	}
     
     
