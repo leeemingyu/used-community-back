@@ -43,5 +43,6 @@
   <select id="getProductsByNickname" resultType="Product" parameterType="String">
     select * from products where nickname=#{nickname}
   </select>
+  
 
 </mapper>

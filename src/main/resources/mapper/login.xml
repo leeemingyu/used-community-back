@@ -14,10 +14,7 @@
   </delete>
   
   <select id="checkToken" resultType="Boolean" parameterType="String">
-    SELECT COUNT(*) > 0 
-    FROM login 
-    WHERE token = #{Authorization} 
-      AND logintime >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+    SELECT COUNT(*) > 0 FROM login WHERE token = #{Authorization}
   </select>
   
   <update id="updateLoginTime" parameterType="String">

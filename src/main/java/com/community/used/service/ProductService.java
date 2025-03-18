@@ -58,6 +58,7 @@ public class ProductService {
     	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
+        	loginDao.deleteToken(Authorization);
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
         
@@ -89,6 +90,7 @@ public class ProductService {
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
+            	loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
@@ -120,6 +122,7 @@ public class ProductService {
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
+            	loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
@@ -133,6 +136,7 @@ public class ProductService {
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
+            	loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
@@ -146,6 +150,7 @@ public class ProductService {
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
+            	loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
@@ -157,6 +162,7 @@ public class ProductService {
     	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
+        	loginDao.deleteToken(Authorization);
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
         
@@ -182,6 +188,7 @@ public class ProductService {
     	boolean isAuthorized = loginDao.checkToken(Authorization);
         
         if (!isAuthorized) {
+        	loginDao.deleteToken(Authorization);
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
         }
         
@@ -209,3 +216,4 @@ public class ProductService {
 
     
 }
+ 
