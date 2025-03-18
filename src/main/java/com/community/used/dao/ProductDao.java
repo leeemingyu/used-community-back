@@ -20,6 +20,9 @@ public interface ProductDao {
 
     // 상품 1개 조회
     public Product getProductById(Long id) throws Exception;
+    
+    // 사용자별 상품 조회
+    public List<Product> getProductsByNickname(String nickname) throws Exception;
 
     // 전체 상품 조회
     public List<Product> getAllProducts() throws Exception;

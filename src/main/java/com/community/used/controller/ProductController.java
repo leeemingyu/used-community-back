@@ -141,6 +141,26 @@ public class ProductController {
         return responseMap;
     }
 
+    @GetMapping("api/products/nickname/{nickname}")
+    public Map<String, Object> getProductsByNickname(@PathVariable("nickname") String nickname) {
+        Map<String, Object> responseMap = new HashMap<>();
+        try {
+            List<Product> products = productService.getProductsByNickname(nickname);  // 카테고리로 상품 조회
+            if (!products.isEmpty()) {
+                responseMap.put("status", "ok");
+                responseMap.put("products", products);  // 조회된 상품 리스트 반환
+            } else {
+                responseMap.put("status", "error");
+                responseMap.put("message", "해당 사용자의 상품이 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMap.put("status", "error");
+            responseMap.put("message", "해당 사용자의 상품 조회에 실패했습니다.");
+        }
+        return responseMap;
+    }
+    
     // 상품 삭제
     @DeleteMapping("api/products/{id}")
     public Map<String, String> deleteProduct(@PathVariable("id") Long id) {

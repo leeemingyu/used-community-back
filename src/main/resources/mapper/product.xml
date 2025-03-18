@@ -38,5 +38,10 @@
   <select id="getProductsByCategory" resultType="Product" parameterType="String">
     select * from products where category=#{category}
   </select>
+  
+  <!-- 사용자별 상품 조회 -->
+  <select id="getProductsByNickname" resultType="Product" parameterType="String">
+    select * from products where nickname=#{nickname}
+  </select>
 
 </mapper>

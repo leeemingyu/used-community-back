@@ -68,7 +68,43 @@ public class ProductService {
         // DB에 상품 정보와 이미지 경로 저장
         productDao.insertProduct(product);
     }
+    
+    // 상품 1개 조회
+    public Product getProductById(Long id) throws Exception {
+        return productDao.getProductById(id);
+    }
+    
+    // 닉네임으로 상품 조회
+    public List<Product> getProductsByNickname(String nickname) throws Exception {
+        return productDao.getProductsByNickname(nickname);  // nickname을 기준으로 상품을 조회하는 메서드 호출
+    }
+    // 전체 상품 조회
+    public List<Product> getAllProducts() throws Exception {
+        List<Product> products = productDao.getAllProducts();
 
+        // 각 상품에 대해 이미지 경로를 URL로 변경
+        for (Product product : products) {
+            if (product.getImage1() != null && !product.getImage1().isEmpty()) {
+                String imageUrls1 = addImageUrlsToPaths(product.getImage1());
+                product.setImage1(imageUrls1);  // 상품의 image1 경로를 이미지 URL로 변경
+            }
+            if (product.getImage2() != null && !product.getImage2().isEmpty()) {
+                String imageUrls2 = addImageUrlsToPaths(product.getImage2());
+                product.setImage2(imageUrls2);  // 상품의 image2 경로를 이미지 URL로 변경
+            }
+            if (product.getImage3() != null && !product.getImage3().isEmpty()) {
+                String imageUrls3 = addImageUrlsToPaths(product.getImage3());
+                product.setImage3(imageUrls3);  // 상품의 image3 경로를 이미지 URL로 변경
+            }
+        }
+
+        return products;
+    }
+    // 카테고리별 상품 조회
+    public List<Product> getProductsByCategory(String category) throws Exception {
+        return productDao.getProductsByCategory(category);
+    }
+    
     // 상품 수정
     public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3) throws Exception {
         // 이미지 파일을 저장하고 경로를 설정
@@ -92,33 +128,7 @@ public class ProductService {
         return rowsDeleted > 0;
     }
 
-    // 상품 1개 조회
-    public Product getProductById(Long id) throws Exception {
-        return productDao.getProductById(id);
-    }
-
- // 전체 상품 조회
-    public List<Product> getAllProducts() throws Exception {
-        List<Product> products = productDao.getAllProducts();
-
-        // 각 상품에 대해 이미지 경로를 URL로 변경
-        for (Product product : products) {
-            if (product.getImage1() != null && !product.getImage1().isEmpty()) {
-                String imageUrls1 = addImageUrlsToPaths(product.getImage1());
-                product.setImage1(imageUrls1);  // 상품의 image1 경로를 이미지 URL로 변경
-            }
-            if (product.getImage2() != null && !product.getImage2().isEmpty()) {
-                String imageUrls2 = addImageUrlsToPaths(product.getImage2());
-                product.setImage2(imageUrls2);  // 상품의 image2 경로를 이미지 URL로 변경
-            }
-            if (product.getImage3() != null && !product.getImage3().isEmpty()) {
-                String imageUrls3 = addImageUrlsToPaths(product.getImage3());
-                product.setImage3(imageUrls3);  // 상품의 image3 경로를 이미지 URL로 변경
-            }
-        }
-
-        return products;
-    }
+    
 
     // 이미지 경로에 URL 추가
     private String addImageUrlsToPaths(String imagePaths) {
@@ -134,8 +144,5 @@ public class ProductService {
     }
 
 
-    // 카테고리별 상품 조회
-    public List<Product> getProductsByCategory(String category) throws Exception {
-        return productDao.getProductsByCategory(category);
-    }
+    
 }
