@@ -50,8 +50,14 @@ public class ProductService {
     }
 
     // 상품 등록
-    public void insertProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3) throws Exception {
-        // 이미지 파일을 저장하고 경로를 설정
+    public void insertProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
+    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+        
+        if (!isAuthorized) {
+            throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
+        }
+    	
+    	// 이미지 파일을 저장하고 경로를 설정
         if (image1 != null) {
             product.setImage1(saveImage(image1));  // 첫 번째 이미지 경로 저장
         }
@@ -106,7 +112,13 @@ public class ProductService {
     }
     
     // 상품 수정
-    public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3) throws Exception {
+    public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
+    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+        
+        if (!isAuthorized) {
+            throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
+        }
+    	
         // 이미지 파일을 저장하고 경로를 설정
         if (image1 != null) {
             product.setImage1(saveImage(image1));  // 첫 번째 이미지 경로 저장
@@ -123,7 +135,13 @@ public class ProductService {
     }
 
     // 상품 삭제
-    public boolean deleteProduct(Long id) throws Exception {
+    public boolean deleteProduct(Long id, String Authorization) throws Exception {
+    	boolean isAuthorized = productDao.checkAuthorization(Authorization);
+        
+        if (!isAuthorized) {
+            throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
+        }
+    	
         int rowsDeleted = productDao.deleteProduct(id);
         return rowsDeleted > 0;
     }
