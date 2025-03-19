@@ -1,6 +1,7 @@
 package com.community.used.service;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.community.used.dao.LoginDao;
 import com.community.used.dao.ProductDao;
 import com.community.used.dao.PurchaseDao;
 import com.community.used.dto.Purchase;
+import com.community.used.dto.Wishlist;
 
 @Service
 public class PurchaseService {
@@ -22,6 +24,8 @@ public class PurchaseService {
 	
 	@Autowired
     LoginDao loginDao;
+	
+	private static final String IMAGE_URL = "http://127.0.0.1:8080/images/"; // 이미지 요청 URL 경로
 	
 	// 상품 구매
     public void insertPurchase(Purchase purchase, String Authorization) throws Exception {
@@ -51,7 +55,11 @@ public class PurchaseService {
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-        return purchaseDao.getPurchasesByNickname(buyerNickname);  // nickname을 기준으로 구매한 상품을 조회하는 메서드 호출
+        List<Purchase> purchases = purchaseDao.getPurchasesByNickname(buyerNickname);
+        for (Purchase p : purchases) {
+            convertImagePathsToUrls(p);
+        }
+        return purchases;
     }
     
     // 구매 내역 삭제
@@ -67,5 +75,24 @@ public class PurchaseService {
     	
         int rowsDeleted = purchaseDao.deletePurchase(productId);
         return rowsDeleted > 0;
+    }
+    
+    // 이미지 경로에 URL 추가
+    private String addImageUrlsToPaths(String imagePaths) {
+        String[] imageNames = imagePaths.split(",");
+        StringJoiner imageUrls = new StringJoiner(",");
+
+        // 각 이미지 경로에 URL을 추가
+        for (String imageName : imageNames) {
+            imageUrls.add(IMAGE_URL + imageName);  // 이미지 URL로 경로 추가
+        }
+
+        return imageUrls.toString();
+    }
+    // 개별 상품의 이미지 경로를 URL로 변환하는 메서드
+    private void convertImagePathsToUrls(Purchase purchase) {
+        if (purchase.getImage1() != null && !purchase.getImage1().isEmpty()) {
+        	purchase.setImage1(addImageUrlsToPaths(purchase.getImage1()));
+        }
     }
 }

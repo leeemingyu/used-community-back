@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Purchase {
 	private Long productId;
-    private String buyerNickname, productName, productCategory, productDescription, sellerNickname;
+    private String buyerNickname, productName, productCategory, productDescription, sellerNickname, image1;
     private int productPrice;
     private Date purchaseDate;
 	public Long getProductId() {
@@ -43,6 +43,12 @@ public class Purchase {
 	public void setSellerNickname(String sellerNickname) {
 		this.sellerNickname = sellerNickname;
 	}
+	public String getImage1() {
+		return image1;
+	}
+	public void setImage1(String image1) {
+		this.image1 = image1;
+	}
 	public int getProductPrice() {
 		return productPrice;
 	}
@@ -56,7 +62,7 @@ public class Purchase {
 		this.purchaseDate = purchaseDate;
 	}
 	public Purchase(Long productId, String buyerNickname, String productName, String productCategory,
-			String productDescription, String sellerNickname, int productPrice, Date purchaseDate) {
+			String productDescription, String sellerNickname, String image1, int productPrice, Date purchaseDate) {
 		super();
 		this.productId = productId;
 		this.buyerNickname = buyerNickname;
@@ -64,6 +70,7 @@ public class Purchase {
 		this.productCategory = productCategory;
 		this.productDescription = productDescription;
 		this.sellerNickname = sellerNickname;
+		this.image1 = image1;
 		this.productPrice = productPrice;
 		this.purchaseDate = purchaseDate;
 	}
@@ -75,8 +82,8 @@ public class Purchase {
 	public String toString() {
 		return "Purchase [productId=" + productId + ", buyerNickname=" + buyerNickname + ", productName=" + productName
 				+ ", productCategory=" + productCategory + ", productDescription=" + productDescription
-				+ ", sellerNickname=" + sellerNickname + ", productPrice=" + productPrice + ", purchaseDate="
-				+ purchaseDate + "]";
+				+ ", sellerNickname=" + sellerNickname + ", image1=" + image1 + ", productPrice=" + productPrice
+				+ ", purchaseDate=" + purchaseDate + "]";
 	}
     
     

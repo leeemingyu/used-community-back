@@ -19,7 +19,9 @@
 	    p.category AS productCategory, 
 	    p.description AS productDescription, 
 	    p.price AS productPrice, 
+	    p.image1 AS image1,
 	    p.nickname AS sellerNickname,
+	    p.isSold AS isSold,
 	    pur.buyerNickname AS buyerNickname,
 	    pur.purchaseDate AS purchaseDate
 	  FROM 
