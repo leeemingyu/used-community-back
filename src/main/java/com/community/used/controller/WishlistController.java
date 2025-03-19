@@ -34,6 +34,7 @@ public class WishlistController {
         Map<String, String> responseMap = new HashMap<>();
         try {
             // 상품 정보와 이미지 파일을 함께 저장
+        	System.out.println(w.toString());
         	wishlistService.insertWishlist(w, Authorization);
         	
             responseMap.put("status", "ok");

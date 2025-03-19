@@ -34,7 +34,7 @@
   
   <!-- 상품 삭제 -->
   <delete id="deleteWishlist" parameterType="Long">
-    delete from wishlist where id=#{wishlistId}
+    delete from wishlist where productId=#{wishlistId}
   </delete>
   
   

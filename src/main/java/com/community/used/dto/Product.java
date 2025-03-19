@@ -14,6 +14,7 @@ public class Product {
     private String image3;
     private String nickname;
     private String isSold;
+    private boolean isLiked;
 	public Long getId() {
 		return id;
 	}
@@ -80,8 +81,14 @@ public class Product {
 	public void setIsSold(String isSold) {
 		this.isSold = isSold;
 	}
+	public boolean isLiked() {
+		return isLiked;
+	}
+	public void setIsLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
 	public Product(Long id, String name, String category, String description, int price, Date createdAt, String image1,
-			String image2, String image3, String nickname, String isSold) {
+			String image2, String image3, String nickname, String isSold, boolean isLiked) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -94,6 +101,7 @@ public class Product {
 		this.image3 = image3;
 		this.nickname = nickname;
 		this.isSold = isSold;
+		this.isLiked = isLiked;
 	}
 	public Product() {
 		super();
@@ -103,10 +111,10 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", category=" + category + ", description=" + description
 				+ ", price=" + price + ", createdAt=" + createdAt + ", image1=" + image1 + ", image2=" + image2
-				+ ", image3=" + image3 + ", nickname=" + nickname + ", isSold=" + isSold + "]";
+				+ ", image3=" + image3 + ", nickname=" + nickname + ", isSold=" + isSold + ", isLiked=" + isLiked + "]";
 	}
     
-	
+    
     
     
     
