@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.community.used.dao.LoginDao;
@@ -21,7 +22,8 @@ public class WishlistService {
 	@Autowired
     LoginDao loginDao;
 	
-	private static final String IMAGE_URL = "http://127.0.0.1:8080/images/"; // 이미지 요청 URL 경로
+	@Value("${image.url}")
+	private String IMAGE_URL;
 	
 	// 위시리시트 등록
     public void insertWishlist(Wishlist wishlist, String Authorization) throws Exception {

@@ -4,6 +4,7 @@ import com.community.used.dao.LoginDao;
 import com.community.used.dao.ProductDao;
 import com.community.used.dto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +27,12 @@ public class ProductService {
     
     @Autowired
     LoginDao loginDao;
-
-    private static final String UPLOAD_DIR = "E:\\ureca\\workspace\\mini-project\\UsedCommunityBack\\src\\main\\resources\\static\\images"; // 파일이 저장될 디렉토리 경로
-    private static final String IMAGE_URL = "http://127.0.0.1:8080/images/"; // 이미지 요청 URL 경로
+    
+    @Value("${upload.dir}")
+	private String UPLOAD_DIR;
+    
+    @Value("${image.url}")
+	private String IMAGE_URL;
 
     // 랜덤 파일 이름 생성
     private String generateRandomFileName() {
