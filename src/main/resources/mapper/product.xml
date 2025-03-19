@@ -17,6 +17,13 @@
     set name=#{name}, category=#{category}, description=#{description}, price=#{price}, imagePaths=#{imagePaths}, nickname=#{nickname}
     where id=#{id}
   </update>
+  
+  <!-- 상품 상태 수정 -->
+  <update id="updateProductStatus" parameterType="Product">
+    UPDATE products
+    SET isSold = #{isSold}
+    WHERE id = #{productId}
+  </update>
 
   <!-- 상품 삭제 -->
   <delete id="deleteProduct" parameterType="Long">
@@ -31,12 +38,14 @@
   <!-- 전체 상품 조회 -->
   <select id="getAllProducts" resultType="Product">
     SELECT * FROM products
+    WHERE isSold = '판매중'
   	ORDER BY createdAt DESC
   </select>
 
   <!-- 카테고리별 상품 조회 -->
   <select id="getProductsByCategory" resultType="Product" parameterType="String">
-    select * from products where category=#{category}
+    SELECT * FROM products
+    WHERE category = #{category} AND isSold = '판매중'
   </select>
   
   <!-- 사용자별 상품 조회 -->
