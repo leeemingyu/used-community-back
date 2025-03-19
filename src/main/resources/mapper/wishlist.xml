@@ -19,7 +19,7 @@
 	    p.price AS productPrice,
 	    p.image1 AS image1,
 	    p.isSold AS isSold,
-	    w.createdAt AS createAt
+	    p.createdAt AS createAt
 	  FROM 
 	    wishlist w
 	  JOIN 

@@ -142,11 +142,21 @@ public class ProductService {
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-
+        // 사용자의 찜 목록 조회
+        List<Wishlist> wishlist = wishlistDao.getWishlistByNickname(nickname);
         Product product = productDao.getProductById(id);
+
+        // 상품이 존재하면
         if (product != null) {
+            // 상품 이미지 경로를 URL로 변환
             convertImagePathsToUrls(product);
+
+            // 찜 목록에 해당 상품이 있는지 확인하여 isLiked 설정
+            boolean isProductLiked = wishlist.stream()
+                                              .anyMatch(w -> w.getProductId().equals(product.getId())); // Wishlist에서 상품 ID가 일치하는지 체크
+            product.setIsLiked(isProductLiked); // isLiked 값 설정
         }
+
         return product;
     }
     // 닉네임으로 상품 조회
