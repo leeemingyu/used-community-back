@@ -11,10 +11,10 @@
     values(#{productId}, #{buyerNickname})
   </insert>
 
-  <!-- 사용자별 구매 내역 조회 -->
+	  <!-- 사용자별 구매 내역 조회 -->
 	<select id="getPurchasesByNickname" resultType="Purchase" parameterType="String">
 	  SELECT 
-	  	p.id AS productId,
+	    p.id AS productId,
 	    p.name AS productName, 
 	    p.category AS productCategory, 
 	    p.description AS productDescription, 
@@ -28,7 +28,10 @@
 	    products p ON pur.productId = p.id
 	  WHERE 
 	    pur.buyerNickname = #{buyerNickname}
+	  ORDER BY 
+	    pur.purchaseDate DESC
 	</select>
+
   
   
   <!-- 상품 삭제 -->

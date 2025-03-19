@@ -55,7 +55,7 @@ public class ProductService {
 
     // 상품 등록
     public void insertProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
-    	boolean isAuthorized = loginDao.checkToken(Authorization);
+    	boolean isAuthorized = loginDao.checkToken(product.getNickname(), Authorization);
         
         if (!isAuthorized) {
         	loginDao.deleteToken(Authorization);
@@ -83,10 +83,10 @@ public class ProductService {
     }
     
     // 전체 상품 조회
-    public List<Product> getAllProducts(String Authorization) throws Exception {
+    public List<Product> getAllProducts(String nickname, String Authorization) throws Exception {
     	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
@@ -115,10 +115,10 @@ public class ProductService {
         return products;
     }
     // 상품 id로 조회
-    public Product getProductById(Long id, String Authorization) throws Exception {
+    public Product getProductById(Long id, String nickname, String Authorization) throws Exception {
     	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
@@ -132,7 +132,7 @@ public class ProductService {
     public List<Product> getProductsByNickname(String nickname, String Authorization) throws Exception {
     	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
@@ -143,10 +143,10 @@ public class ProductService {
         return productDao.getProductsByNickname(nickname);  // nickname을 기준으로 상품을 조회하는 메서드 호출
     }
     // 카테고리별 상품 조회
-    public List<Product> getProductsByCategory(String category, String Authorization) throws Exception {
+    public List<Product> getProductsByCategory(String category, String nickname, String Authorization) throws Exception {
     	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
             if (isAuthorized) {
                 loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
             } else {
@@ -159,7 +159,7 @@ public class ProductService {
     
     // 상품 수정
     public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
-    	boolean isAuthorized = loginDao.checkToken(Authorization);
+    	boolean isAuthorized = loginDao.checkToken(product.getNickname(), Authorization);
         
         if (!isAuthorized) {
         	loginDao.deleteToken(Authorization);
@@ -184,8 +184,8 @@ public class ProductService {
     }
 
     // 상품 삭제
-    public boolean deleteProduct(Long id, String Authorization) throws Exception {
-    	boolean isAuthorized = loginDao.checkToken(Authorization);
+    public boolean deleteProduct(Long id, String nickname, String Authorization) throws Exception {
+    	boolean isAuthorized = loginDao.checkToken(nickname, Authorization);
         
         if (!isAuthorized) {
         	loginDao.deleteToken(Authorization);

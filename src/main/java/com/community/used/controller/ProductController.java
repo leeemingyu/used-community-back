@@ -58,10 +58,10 @@ public class ProductController {
 
     // 전체 상품 조회
     @GetMapping("api/products")
-    public Map<String, Object> getAllProducts(@RequestHeader(value = "Authorization", required = false) String Authorization) {
+    public Map<String, Object> getAllProducts(@RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            List<Product> products = productService.getAllProducts(Authorization);  // 모든 상품을 조회
+            List<Product> products = productService.getAllProducts(nickname, Authorization);  // 모든 상품을 조회
             responseMap.put("status", "ok");
             responseMap.put("products", products);  // 조회된 상품 리스트 반환
         } catch (Exception e) {
@@ -73,10 +73,10 @@ public class ProductController {
     }
     // 상품 id로 조회
     @GetMapping("api/products/{id}")
-    public Map<String, Object> getProductById(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+    public Map<String, Object> getProductById(@PathVariable("id") Long id, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            Product product = productService.getProductById(id, Authorization);  // 상품 ID로 상품을 조회
+            Product product = productService.getProductById(id, nickname, Authorization);  // 상품 ID로 상품을 조회
             responseMap.put("status", "ok");
             responseMap.put("product", product);  // 조회된 상품 반환
             
@@ -88,11 +88,11 @@ public class ProductController {
         return responseMap;
     }
     // 닉네임으로 상품 조회
-    @GetMapping("api/products/nickname/{nickname}")
-    public Map<String, Object> getProductsByNickname(@PathVariable("nickname") String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+    @GetMapping("api/products/nickname/{prodNick}")
+    public Map<String, Object> getProductsByNickname(@PathVariable("prodNick") String prodNick, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            List<Product> products = productService.getProductsByNickname(nickname, Authorization);  // 카테고리로 상품 조회
+            List<Product> products = productService.getProductsByNickname(prodNick, Authorization);  // 카테고리로 상품 조회
             responseMap.put("status", "ok");
             responseMap.put("products", products);  // 조회된 상품 리스트 반환
             
@@ -105,10 +105,10 @@ public class ProductController {
     }
     // 카테고리별 상품 조회
     @GetMapping("api/products/category/{category}")
-    public Map<String, Object> getProductsByCategory(@PathVariable("category") String category, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+    public Map<String, Object> getProductsByCategory(@PathVariable("category") String category, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            List<Product> products = productService.getProductsByCategory(category, Authorization);  // 카테고리로 상품 조회
+            List<Product> products = productService.getProductsByCategory(category, nickname, Authorization);  // 카테고리로 상품 조회
             responseMap.put("status", "ok");
             responseMap.put("products", products);  // 조회된 상품 리스트 반환
             
@@ -162,10 +162,10 @@ public class ProductController {
     
     // 상품 삭제
     @DeleteMapping("api/products/{id}")
-    public Map<String, String> deleteProduct(@PathVariable("id") Long id, @RequestHeader String Authorization) {
+    public Map<String, String> deleteProduct(@PathVariable("id") Long id, @RequestHeader String nickname, @RequestHeader String Authorization) {
         Map<String, String> responseMap = new HashMap<>();
         try {
-            boolean isDeleted = productService.deleteProduct(id, Authorization);  // 상품 삭제 서비스 호출
+            boolean isDeleted = productService.deleteProduct(id, nickname, Authorization);  // 상품 삭제 서비스 호출
             if (isDeleted) {
                 responseMap.put("status", "ok");
                 responseMap.put("message", "상품 삭제 성공");

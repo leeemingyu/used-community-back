@@ -9,7 +9,7 @@ public interface LoginDao {
 
 	public void deleteToken(String token) throws Exception;
 	
-    public boolean checkToken(String Authorization) throws Exception;
+    public boolean checkToken(String nickname, String Authorization) throws Exception;
     
     public void updateLoginTime(String Authorization) throws Exception;
 }
