@@ -14,7 +14,10 @@
   </delete>
   
   <select id="checkToken" resultType="Boolean" parameterType="String">
-    SELECT COUNT(*) > 0 FROM login WHERE token = #{Authorization}
+    SELECT COUNT(*) = 1 
+    FROM login 
+    WHERE token = #{Authorization} 
+    AND nickname = #{nickname}
   </select>
   
   <update id="updateLoginTime" parameterType="String">

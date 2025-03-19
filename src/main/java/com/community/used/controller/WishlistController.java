@@ -1,6 +1,5 @@
 package com.community.used.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,31 +12,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.community.used.dto.Product;
 import com.community.used.dto.Purchase;
-import com.community.used.service.PurchaseService;
+import com.community.used.dto.Wishlist;
+import com.community.used.service.WishlistService;
 
 @RestController
 @CrossOrigin("http://127.0.0.1:5500/")
-public class purchaseController {
+public class WishlistController {
 
 	@Autowired
-    PurchaseService purchaseService;
+	WishlistService wishlistService;
 	
-	// 상품 등록
-    @PostMapping("api/purchase/new")
-    public Map<String, String> insertProduct(
-    		@RequestBody Purchase p,
+	// 위시리스트 등록
+	@PostMapping("api/wishlist/new")
+	public Map<String, String> insertWishlist(
+    		@RequestBody Wishlist w,
             @RequestHeader String Authorization) {
 
         Map<String, String> responseMap = new HashMap<>();
         try {
             // 상품 정보와 이미지 파일을 함께 저장
-            purchaseService.insertPurchase(p, Authorization);
+        	wishlistService.insertWishlist(w, Authorization);
 
             responseMap.put("status", "ok");
             responseMap.put("message", "상품 구매 성공");
@@ -52,15 +49,15 @@ public class purchaseController {
         }
         return responseMap;
     }
-    
-    // 닉네임으로 구매 상품 조회
-    @GetMapping("api/purchase/nickname/{buyerNickname}")
-    public Map<String, Object> getProductsByNickname(@PathVariable("buyerNickname") String buyerNickname, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+	
+	// 닉네임으로 위시리시트 조회
+    @GetMapping("api/wishlist/nickname/{wishNick}")
+    public Map<String, Object> getProductsByNickname(@PathVariable("wishNick") String wishNick, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            List<Purchase> purchase = purchaseService.getPurchasesByNickname(buyerNickname, nickname, Authorization);  // 카테고리로 상품 조회
+            List<Wishlist> wishlist = wishlistService.getWishlistByNickname(wishNick, nickname, Authorization);  // 카테고리로 상품 조회
             responseMap.put("status", "ok");
-            responseMap.put("products", purchase);  // 조회된 구매 내역 리스트 반환
+            responseMap.put("wishlist", wishlist);  // 조회된 구매 내역 리스트 반환
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
@@ -69,18 +66,18 @@ public class purchaseController {
         return responseMap;
     }
     
-    // 구매 내역 삭제
-    @DeleteMapping("api/purchase/{id}")
-    public Map<String, String> deleteProduct(@PathVariable("productId") Long productId, @RequestHeader String Authorization, @RequestBody String nickname) {
+    // 위시리스트 삭제
+    @DeleteMapping("api/wishlist/{wishlistId}")
+    public Map<String, String> deleteProduct(@PathVariable("wishlistId") Long productId, @RequestHeader String nickname, @RequestHeader String Authorization) {
         Map<String, String> responseMap = new HashMap<>();
         try {
-            boolean isDeleted = purchaseService.deletePurchase(productId, nickname, Authorization);  // 상품 삭제 서비스 호출
+            boolean isDeleted = wishlistService.deleteWishlist(productId, nickname, Authorization);  // 상품 삭제 서비스 호출
             if (isDeleted) {
                 responseMap.put("status", "ok");
-                responseMap.put("message", "상품 삭제 성공");
+                responseMap.put("message", "위시리스트 삭제 성공");
             } else {
                 responseMap.put("status", "error");
-                responseMap.put("message", "상품을 찾을 수 없거나 삭제 실패");
+                responseMap.put("message", "위시리스트를 찾을 수 없거나 삭제 실패");
             }
         } catch (Exception e) {
             e.printStackTrace();
