@@ -14,6 +14,9 @@ public interface ProductDao {
 
     // 상품 수정
     public void updateProduct(Product product) throws Exception;
+    
+    // 상품 상태 수정
+    public void updateProductStatus(Long productId, String isSold) throws Exception;
 
     // 상품 삭제
     public int deleteProduct(Long id) throws Exception;

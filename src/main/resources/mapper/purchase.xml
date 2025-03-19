@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.used.dao.PurchaseDao">
+  
+  <!-- 구매 내역 등록 -->
+  <insert id="insertPurchase" parameterType="Purchase">
+    insert into purchases(productId, buyerNickname) 
+    values(#{productId}, #{buyerNickname})
+  </insert>
+
+  <!-- 사용자별 구매 내역 조회 -->
+	<select id="getPurchasesByNickname" resultType="Purchase" parameterType="String">
+	  SELECT 
+	  	p.id AS productId,
+	    p.name AS productName, 
+	    p.category AS productCategory, 
+	    p.description AS productDescription, 
+	    p.price AS productPrice, 
+	    p.nickname AS sellerNickname,
+	    pur.buyerNickname AS buyerNickname,
+	    pur.purchaseDate AS purchaseDate
+	  FROM 
+	    purchases pur
+	  JOIN 
+	    products p ON pur.productId = p.id
+	  WHERE 
+	    pur.buyerNickname = #{buyerNickname}
+	</select>
+  
+  
+  <!-- 상품 삭제 -->
+  <delete id="deletePurchase" parameterType="Long">
+    delete from purchases where productId=#{productId}
+  </delete>
+  
+  
+
+</mapper>

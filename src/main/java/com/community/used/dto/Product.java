@@ -13,6 +13,7 @@ public class Product {
     private String image2;
     private String image3;
     private String nickname;
+    private String isSold;
 	public Long getId() {
 		return id;
 	}
@@ -73,8 +74,14 @@ public class Product {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	public String getIsSold() {
+		return isSold;
+	}
+	public void setIsSold(String isSold) {
+		this.isSold = isSold;
+	}
 	public Product(Long id, String name, String category, String description, int price, Date createdAt, String image1,
-			String image2, String image3, String nickname) {
+			String image2, String image3, String nickname, String isSold) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -86,6 +93,7 @@ public class Product {
 		this.image2 = image2;
 		this.image3 = image3;
 		this.nickname = nickname;
+		this.isSold = isSold;
 	}
 	public Product() {
 		super();
@@ -95,8 +103,10 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", category=" + category + ", description=" + description
 				+ ", price=" + price + ", createdAt=" + createdAt + ", image1=" + image1 + ", image2=" + image2
-				+ ", image3=" + image3 + ", nickname=" + nickname + "]";
+				+ ", image3=" + image3 + ", nickname=" + nickname + ", isSold=" + isSold + "]";
 	}
+    
+	
     
     
     

@@ -77,13 +77,9 @@ public class ProductController {
         Map<String, Object> responseMap = new HashMap<>();
         try {
             Product product = productService.getProductById(id, Authorization);  // 상품 ID로 상품을 조회
-            if (product != null) {
-                responseMap.put("status", "ok");
-                responseMap.put("product", product);  // 조회된 상품 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "상품을 찾을 수 없습니다.");
-            }
+            responseMap.put("status", "ok");
+            responseMap.put("product", product);  // 조회된 상품 반환
+            
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
@@ -97,13 +93,9 @@ public class ProductController {
         Map<String, Object> responseMap = new HashMap<>();
         try {
             List<Product> products = productService.getProductsByNickname(nickname, Authorization);  // 카테고리로 상품 조회
-            if (!products.isEmpty()) {
-                responseMap.put("status", "ok");
-                responseMap.put("products", products);  // 조회된 상품 리스트 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "해당 사용자의 상품이 없습니다.");
-            }
+            responseMap.put("status", "ok");
+            responseMap.put("products", products);  // 조회된 상품 리스트 반환
+            
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
@@ -117,13 +109,9 @@ public class ProductController {
         Map<String, Object> responseMap = new HashMap<>();
         try {
             List<Product> products = productService.getProductsByCategory(category, Authorization);  // 카테고리로 상품 조회
-            if (!products.isEmpty()) {
-                responseMap.put("status", "ok");
-                responseMap.put("products", products);  // 조회된 상품 리스트 반환
-            } else {
-                responseMap.put("status", "error");
-                responseMap.put("message", "해당 카테고리에 상품이 없습니다.");
-            }
+            responseMap.put("status", "ok");
+            responseMap.put("products", products);  // 조회된 상품 리스트 반환
+            
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
