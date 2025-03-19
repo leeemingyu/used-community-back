@@ -34,6 +34,7 @@ public class PurchaseService {
         loginDao.updateLoginTime(Authorization);
         productDao.updateProductStatus(purchase.getProductId(), "판매완료");
         
+        
         // DB에 상품 정보와 이미지 경로 저장
         purchaseDao.insertPurchase(purchase);
     }

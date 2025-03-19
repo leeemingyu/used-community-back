@@ -6,7 +6,7 @@
 <mapper namespace="com.community.used.dao.LoginDao">
   
   <insert id="insertToken" parameterType="Login">
-  	insert into login(email, token) values(#{email},#{token})
+  	insert into login(email, token, nickname) values(#{email},#{token},#{nickname})
   </insert>
   
   <delete id="deleteToken" parameterType="String">

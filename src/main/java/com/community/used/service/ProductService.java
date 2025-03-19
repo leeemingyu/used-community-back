@@ -116,45 +116,57 @@ public class ProductService {
     }
     // 상품 id로 조회
     public Product getProductById(Long id, String nickname, String Authorization) throws Exception {
-    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);
             if (isAuthorized) {
-                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+                loginDao.updateLoginTime(Authorization);
             } else {
-            	loginDao.deleteToken(Authorization);
+                loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-        return productDao.getProductById(id);
+
+        Product product = productDao.getProductById(id);
+        if (product != null) {
+            convertImagePathsToUrls(product);
+        }
+        return product;
     }
     // 닉네임으로 상품 조회
     public List<Product> getProductsByNickname(String nickname, String Authorization) throws Exception {
-    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);
             if (isAuthorized) {
-                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+                loginDao.updateLoginTime(Authorization);
             } else {
-            	loginDao.deleteToken(Authorization);
+                loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-        return productDao.getProductsByNickname(nickname);  // nickname을 기준으로 상품을 조회하는 메서드 호출
+
+        List<Product> products = productDao.getProductsByNickname(nickname);
+        for (Product product : products) {
+            convertImagePathsToUrls(product);
+        }
+        return products;
     }
     // 카테고리별 상품 조회
     public List<Product> getProductsByCategory(String category, String nickname, String Authorization) throws Exception {
-    	// 만약 Authorization이 있으면 토큰을 체크하고 로그인 시간을 업데이트
         if (Authorization != null && !Authorization.isEmpty()) {
-            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);  // 토큰 인증 확인
+            boolean isAuthorized = loginDao.checkToken(nickname, Authorization);
             if (isAuthorized) {
-                loginDao.updateLoginTime(Authorization);  // 로그인 시간 업데이트
+                loginDao.updateLoginTime(Authorization);
             } else {
-            	loginDao.deleteToken(Authorization);
+                loginDao.deleteToken(Authorization);
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-        return productDao.getProductsByCategory(category);
+
+        List<Product> products = productDao.getProductsByCategory(category);
+        for (Product product : products) {
+            convertImagePathsToUrls(product);
+        }
+        return products;
     }
     
     // 상품 수정
@@ -212,7 +224,18 @@ public class ProductService {
 
         return imageUrls.toString();
     }
-
+    // 개별 상품의 이미지 경로를 URL로 변환하는 메서드
+    private void convertImagePathsToUrls(Product product) {
+        if (product.getImage1() != null && !product.getImage1().isEmpty()) {
+            product.setImage1(addImageUrlsToPaths(product.getImage1()));
+        }
+        if (product.getImage2() != null && !product.getImage2().isEmpty()) {
+            product.setImage2(addImageUrlsToPaths(product.getImage2()));
+        }
+        if (product.getImage3() != null && !product.getImage3().isEmpty()) {
+            product.setImage3(addImageUrlsToPaths(product.getImage3()));
+        }
+    }
 
     
 }

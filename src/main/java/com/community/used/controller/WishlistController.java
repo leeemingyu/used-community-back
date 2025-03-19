@@ -35,9 +35,9 @@ public class WishlistController {
         try {
             // 상품 정보와 이미지 파일을 함께 저장
         	wishlistService.insertWishlist(w, Authorization);
-
+        	
             responseMap.put("status", "ok");
-            responseMap.put("message", "상품 구매 성공");
+            responseMap.put("message", "상품 찜 성공");
         		} catch (Exception e) {
             e.printStackTrace();
             responseMap.put("status", "error");
@@ -52,7 +52,7 @@ public class WishlistController {
 	
 	// 닉네임으로 위시리시트 조회
     @GetMapping("api/wishlist/nickname/{wishNick}")
-    public Map<String, Object> getProductsByNickname(@PathVariable("wishNick") String wishNick, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
+    public Map<String, Object> getWishlistByNickname(@PathVariable("wishNick") String wishNick, @RequestHeader(value = "nickname", required = false) String nickname, @RequestHeader(value = "Authorization", required = false) String Authorization) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
             List<Wishlist> wishlist = wishlistService.getWishlistByNickname(wishNick, nickname, Authorization);  // 카테고리로 상품 조회
@@ -68,7 +68,7 @@ public class WishlistController {
     
     // 위시리스트 삭제
     @DeleteMapping("api/wishlist/{wishlistId}")
-    public Map<String, String> deleteProduct(@PathVariable("wishlistId") Long productId, @RequestHeader String nickname, @RequestHeader String Authorization) {
+    public Map<String, String> deleteWishlist(@PathVariable("wishlistId") Long productId, @RequestHeader String nickname, @RequestHeader String Authorization) {
         Map<String, String> responseMap = new HashMap<>();
         try {
             boolean isDeleted = wishlistService.deleteWishlist(productId, nickname, Authorization);  // 상품 삭제 서비스 호출

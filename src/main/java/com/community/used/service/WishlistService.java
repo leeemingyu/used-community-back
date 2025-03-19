@@ -1,12 +1,14 @@
 package com.community.used.service;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.community.used.dao.LoginDao;
 import com.community.used.dao.WishlistDao;
+import com.community.used.dto.Product;
 import com.community.used.dto.Purchase;
 import com.community.used.dto.Wishlist;
 
@@ -19,10 +21,12 @@ public class WishlistService {
 	@Autowired
     LoginDao loginDao;
 	
+	private static final String IMAGE_URL = "http://127.0.0.1:8080/images/"; // 이미지 요청 URL 경로
+	
 	// 위시리시트 등록
     public void insertWishlist(Wishlist wishlist, String Authorization) throws Exception {
     	boolean isAuthorized = loginDao.checkToken(wishlist.getNickname(), Authorization);
-        
+    	
         if (!isAuthorized) {
         	loginDao.deleteToken(Authorization);
             throw new Exception("잘못된 접근입니다.");  // 인증 실패 시 예외 발생
@@ -43,7 +47,11 @@ public class WishlistService {
                 throw new Exception("잘못된 인증 정보입니다.");
             }
         }
-        return wishlistDao.getWishlistByNickname(wishNick);
+        List<Wishlist> wishs = wishlistDao.getWishlistByNickname(wishNick);
+        for (Wishlist w : wishs) {
+            convertImagePathsToUrls(w);
+        }
+        return wishs;
     }
     
     // 위시리스트 삭제
@@ -59,5 +67,24 @@ public class WishlistService {
     	
         int rowsDeleted = wishlistDao.deleteWishlist(wishlistId);
         return rowsDeleted > 0;
+    }
+    
+    // 이미지 경로에 URL 추가
+    private String addImageUrlsToPaths(String imagePaths) {
+        String[] imageNames = imagePaths.split(",");
+        StringJoiner imageUrls = new StringJoiner(",");
+
+        // 각 이미지 경로에 URL을 추가
+        for (String imageName : imageNames) {
+            imageUrls.add(IMAGE_URL + imageName);  // 이미지 URL로 경로 추가
+        }
+
+        return imageUrls.toString();
+    }
+    // 개별 상품의 이미지 경로를 URL로 변환하는 메서드
+    private void convertImagePathsToUrls(Wishlist wishlist) {
+        if (wishlist.getImage1() != null && !wishlist.getImage1().isEmpty()) {
+        	wishlist.setImage1(addImageUrlsToPaths(wishlist.getImage1()));
+        }
     }
 }
