@@ -66,7 +66,6 @@ public class WishlistService {
         }
         
         loginDao.updateLoginTime(Authorization);
-    	
         int rowsDeleted = wishlistDao.deleteWishlist(wishlistId);
         return rowsDeleted > 0;
     }

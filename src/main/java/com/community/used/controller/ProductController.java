@@ -1,7 +1,10 @@
 package com.community.used.controller;
 
 import com.community.used.dto.Product;
+import com.community.used.dto.Wishlist;
 import com.community.used.service.ProductService;
+import com.community.used.service.WishlistService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +19,9 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+    
+    @Autowired
+    WishlistService wishlistService;
 
     // 상품 등록
     @PostMapping("api/products/new")
@@ -39,7 +45,7 @@ public class ProductController {
             product.setDescription(description);
             product.setPrice(price);
             product.setNickname(nickname);
-            System.out.println(nickname);
+            
             productService.insertProduct(product, image1, image2, image3, Authorization);
 
             responseMap.put("status", "ok");

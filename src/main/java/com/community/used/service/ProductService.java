@@ -2,7 +2,10 @@ package com.community.used.service;
 
 import com.community.used.dao.LoginDao;
 import com.community.used.dao.ProductDao;
+import com.community.used.dao.WishlistDao;
 import com.community.used.dto.Product;
+import com.community.used.dto.Wishlist;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -27,6 +32,9 @@ public class ProductService {
     
     @Autowired
     LoginDao loginDao;
+    
+    @Autowired
+    WishlistDao wishlistDao;
     
     @Value("${upload.dir}")
 	private String UPLOAD_DIR;
@@ -100,9 +108,14 @@ public class ProductService {
         }
     	
     	List<Product> products = productDao.getAllProducts();
-
+    	List<Wishlist> wishlist = wishlistDao.getWishlistByNickname(nickname);
+    	
+    	Set<Long> wishlistProductIds = wishlist.stream().map(Wishlist::getProductId).collect(Collectors.toSet());
+    	
         // 각 상품에 대해 이미지 경로를 URL로 변경
         for (Product product : products) {
+        	product.setIsLiked(wishlistProductIds.contains(product.getId()));
+        	
             if (product.getImage1() != null && !product.getImage1().isEmpty()) {
                 String imageUrls1 = addImageUrlsToPaths(product.getImage1());
                 product.setImage1(imageUrls1);  // 상품의 image1 경로를 이미지 URL로 변경
