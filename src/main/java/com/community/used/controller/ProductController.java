@@ -149,8 +149,8 @@ public class ProductController {
             product.setDescription(description);
             product.setPrice(price);
             product.setNickname(nickname);
-
-            productService.updateProduct(product, image1, image2, image3, Authorization);
+            
+            productService.updateProduct(product, Authorization);
 
             responseMap.put("status", "ok");
             responseMap.put("message", "상품 수정 성공");

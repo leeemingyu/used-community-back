@@ -197,7 +197,7 @@ public class ProductService {
     }
     
     // 상품 수정
-    public void updateProduct(Product product, MultipartFile image1, MultipartFile image2, MultipartFile image3, String Authorization) throws Exception {
+    public void updateProduct(Product product, String Authorization) throws Exception {
     	boolean isAuthorized = loginDao.checkToken(product.getNickname(), Authorization);
         
         if (!isAuthorized) {
@@ -206,17 +206,6 @@ public class ProductService {
         }
         
         loginDao.updateLoginTime(Authorization);
-    	
-        // 이미지 파일을 저장하고 경로를 설정
-        if (image1 != null) {
-            product.setImage1(saveImage(image1));  // 첫 번째 이미지 경로 저장
-        }
-        if (image2 != null) {
-            product.setImage2(saveImage(image2));  // 두 번째 이미지 경로 저장
-        }
-        if (image3 != null) {
-            product.setImage3(saveImage(image3));  // 세 번째 이미지 경로 저장
-        }
 
         // DB에 수정된 상품 정보 저장
         productDao.updateProduct(product);

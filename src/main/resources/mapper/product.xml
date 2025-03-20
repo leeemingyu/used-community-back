@@ -14,7 +14,7 @@
   <!-- 상품 수정 -->
   <update id="updateProduct" parameterType="Product">
     update products
-    set name=#{name}, category=#{category}, description=#{description}, price=#{price}, imagePaths=#{imagePaths}, nickname=#{nickname}
+    set name=#{name}, category=#{category}, description=#{description}, price=#{price}, nickname=#{nickname}
     where id=#{id}
   </update>
   
